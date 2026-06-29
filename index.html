@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>TFLab - Azure Terraform Sim</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
@@ -12917,6 +12917,451 @@ html.tl-sim-active #pg-auth{display:none!important;}
   var oldSetMode=window.setMode;if(typeof oldSetMode==='function'&&!oldSetMode.__tlGraph32){var wrapped=function(m){var ret=oldSetMode.apply(this,arguments);var b=$('mode-graph');if(b)b.classList.remove('tl-graph-active');setTimeout(injectButton,0);return ret;};wrapped.__tlGraph32=true;window.setMode=wrapped;try{setMode=wrapped;}catch(e){}}
   var oldClose=window.closeIgb;if(typeof oldClose==='function'&&!oldClose.__tlGraph32){var close=function(){var b=$('mode-graph');if(b)b.classList.remove('tl-graph-active');var w=$('igb-window');if(w)w.removeAttribute('data-tl-browser-mode');return oldClose.apply(this,arguments);};close.__tlGraph32=true;window.closeIgb=close;try{closeIgb=close;}catch(e){}}
   function boot(){injectButton();setTimeout(injectButton,80);setTimeout(injectButton,350);setTimeout(injectButton,1200);}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();window.addEventListener('load',function(){setTimeout(injectButton,100);setTimeout(injectButton,1000);});setInterval(injectButton,1000);
+})();
+</script>
+
+
+<!-- TFLAB PATCH 33: dark browser scrollbars + larger browser viewport -->
+<style id="tl-patch33-scrollbar-cleanup">
+/* Remove the white native scrollbar arrow boxes in the in-game browser. */
+#igb-overlay,
+#igb-window,
+#igb-window *,
+#tl-dash-dropdown-v22,
+#tl-dash-dropdown-v22 *{
+  scrollbar-width:thin!important;
+  scrollbar-color:rgba(126,249,255,.36) rgba(5,5,14,.96)!important;
+}
+#igb-window::-webkit-scrollbar,
+#igb-window *::-webkit-scrollbar,
+#tl-dash-dropdown-v22::-webkit-scrollbar,
+#tl-dash-dropdown-v22 *::-webkit-scrollbar{
+  width:8px!important;
+  height:8px!important;
+  background:#05050e!important;
+}
+#igb-window::-webkit-scrollbar-button,
+#igb-window *::-webkit-scrollbar-button,
+#tl-dash-dropdown-v22::-webkit-scrollbar-button,
+#tl-dash-dropdown-v22 *::-webkit-scrollbar-button{
+  display:none!important;
+  width:0!important;
+  height:0!important;
+  min-width:0!important;
+  min-height:0!important;
+  background:transparent!important;
+}
+#igb-window::-webkit-scrollbar-track,
+#igb-window *::-webkit-scrollbar-track,
+#tl-dash-dropdown-v22::-webkit-scrollbar-track,
+#tl-dash-dropdown-v22 *::-webkit-scrollbar-track{
+  background:#05050e!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+#igb-window::-webkit-scrollbar-thumb,
+#igb-window *::-webkit-scrollbar-thumb,
+#tl-dash-dropdown-v22::-webkit-scrollbar-thumb,
+#tl-dash-dropdown-v22 *::-webkit-scrollbar-thumb{
+  background:linear-gradient(180deg,rgba(126,249,255,.44),rgba(168,85,247,.32))!important;
+  border:2px solid #05050e!important;
+  border-radius:999px!important;
+  min-height:32px!important;
+}
+#igb-window::-webkit-scrollbar-corner,
+#igb-window *::-webkit-scrollbar-corner,
+#tl-dash-dropdown-v22::-webkit-scrollbar-corner,
+#tl-dash-dropdown-v22 *::-webkit-scrollbar-corner{
+  background:#05050e!important;
+}
+
+/* Give the computer/graph browser a little more room so tab rows do not create ugly native scroll controls. */
+#igb-window{
+  width:min(1180px,96vw)!important;
+  height:min(800px,92vh)!important;
+  max-width:96vw!important;
+  max-height:92vh!important;
+}
+#igb-window[data-tl-browser-mode="graph"]{
+  width:min(1380px,98vw)!important;
+  height:min(880px,94vh)!important;
+  max-width:98vw!important;
+  max-height:94vh!important;
+}
+#igb-chrome{flex-shrink:0!important;}
+#igb-tabbar{
+  height:auto!important;
+  min-height:42px!important;
+  overflow:visible!important;
+  overflow-x:visible!important;
+  overflow-y:visible!important;
+  flex-wrap:wrap!important;
+  align-items:stretch!important;
+  align-content:flex-end!important;
+  padding:0 12px 4px!important;
+  gap:4px!important;
+}
+#igb-tabbar .igb-tab{
+  min-height:36px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:6px!important;
+  flex:0 0 auto!important;
+}
+#igb-content{
+  min-width:0!important;
+  min-height:0!important;
+  overflow:hidden!important;
+}
+#igb-content .igb-view{
+  min-width:0!important;
+  min-height:0!important;
+  overflow-x:hidden!important;
+}
+#igb-res-body,
+#igb-server-body,
+.igb-view > div{
+  min-width:0!important;
+}
+#igb-window[data-tl-browser-mode="graph"] .igb-view{
+  overflow:auto!important;
+}
+#igb-window[data-tl-browser-mode="graph"] .tl32-shell{
+  overflow:auto!important;
+  background:#05050e!important;
+}
+#igb-window[data-tl-browser-mode="graph"] .tl32-svg{
+  width:100%!important;
+  max-width:none!important;
+}
+@media(max-width:760px){
+  #igb-window{width:98vw!important;height:92vh!important;max-width:98vw!important;max-height:92vh!important;}
+  #igb-window[data-tl-browser-mode="graph"]{width:99vw!important;height:94vh!important;max-width:99vw!important;max-height:94vh!important;}
+}
+</style>
+
+
+<style id="tl-patch34-mobile-friendly">
+/* ── TFLAB MOBILE FRIENDLY PASS ──
+   Goal: make the room, top bar, browser windows, dropdowns, graph and on-prem forms usable on phones/tablets. */
+:root{--tl-safe-top:env(safe-area-inset-top,0px);--tl-safe-right:env(safe-area-inset-right,0px);--tl-safe-bottom:env(safe-area-inset-bottom,0px);--tl-safe-left:env(safe-area-inset-left,0px)}
+html,body{max-width:100%;overflow-x:hidden;overscroll-behavior:none;touch-action:manipulation;}
+button,.mode-btn,.igb-tab,.igb-tbtn,.cmd-btn,.abtn,.cbtn,.tl-v22-dd-trigger,.tl-v29-op-trigger,.money{touch-action:manipulation;-webkit-tap-highlight-color:rgba(126,249,255,.14);}
+#pg-sim{height:100dvh!important;min-height:100dvh!important;max-height:100dvh!important;overflow:hidden!important;}
+
+@media (max-width: 820px){
+  /* Header becomes a compact, scrollable control deck instead of a cramped desktop bar. */
+  #pg-sim .sim-top{
+    position:relative!important;
+    z-index:6000!important;
+    display:grid!important;
+    grid-template-columns:auto minmax(0,1fr) auto!important;
+    align-items:center!important;
+    gap:8px!important;
+    height:auto!important;
+    min-height:0!important;
+    max-height:none!important;
+    padding:calc(7px + var(--tl-safe-top)) calc(9px + var(--tl-safe-right)) 7px calc(9px + var(--tl-safe-left))!important;
+    overflow:visible!important;
+    border-bottom:1px solid rgba(126,249,255,.22)!important;
+  }
+  #pg-sim .sim-logo{grid-column:1!important;font-size:14px!important;min-width:0!important;white-space:nowrap!important;}
+  #pg-sim .sim-logo .l-logo-icon{width:25px!important;height:25px!important;}
+  #pg-sim .sim-right{grid-column:3!important;justify-self:end!important;margin-left:0!important;gap:7px!important;min-width:0!important;}
+  #pg-sim .sim-user span,#pg-sim .music-btn span,#pg-sim .sim-right > .ti-bell{display:none!important;}
+  #pg-sim .music-btn{width:32px!important;height:32px!important;justify-content:center!important;padding:0!important;}
+  #pg-sim .sim-av{width:28px!important;height:28px!important;}
+  #pg-sim #sim-search{display:none!important;}
+
+  #pg-sim .mode-toggle.tl-mode-stack{
+    grid-column:1 / -1!important;
+    order:initial!important;
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    margin:0!important;
+    padding:7px 0 0!important;
+    border-left:0!important;
+    border-top:1px solid rgba(126,249,255,.14)!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    justify-content:flex-start!important;
+    gap:8px!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+  #pg-sim .mode-toggle.tl-mode-stack::-webkit-scrollbar{display:none!important;}
+  #pg-sim .tl-mode-row{flex:0 0 auto!important;min-width:max-content!important;height:34px!important;gap:5px!important;}
+  #pg-sim .tl-mode-row.main{border-right:1px solid rgba(126,249,255,.18)!important;margin-right:0!important;padding-right:8px!important;}
+  #pg-sim .tl-mode-row .mode-btn,
+  #pg-sim .tl-mode-row.main .mode-btn,
+  #pg-sim .tl-mode-row.sub .mode-btn{
+    height:32px!important;
+    min-width:66px!important;
+    padding:0 10px!important;
+    font-size:14px!important;
+    border-radius:8px!important;
+  }
+  #pg-sim .tl-mode-row.sub .mode-btn{min-width:58px!important;font-size:13px!important;}
+
+  #pg-sim .tl-clean-top-stats{
+    grid-column:1 / -1!important;
+    order:initial!important;
+    width:100%!important;
+    margin:0!important;
+    padding:2px 0 1px!important;
+    display:flex!important;
+    flex-wrap:nowrap!important;
+    justify-content:flex-start!important;
+    gap:7px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+  #pg-sim .tl-clean-top-stats::-webkit-scrollbar{display:none!important;}
+  #pg-sim .tl-clean-top-stats > *,
+  #pg-sim #tl-clean-top-stats .tl-v22-dd-trigger,
+  #pg-sim #tl-clean-top-stats .tl-v29-op-trigger,
+  #pg-sim #tl-clean-top-stats .money{
+    flex:0 0 auto!important;
+    min-height:32px!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    padding:6px 9px!important;
+    border-radius:999px!important;
+    font-size:12px!important;
+    line-height:1!important;
+    white-space:nowrap!important;
+  }
+
+  /* Room view gets the available height and hotspots are easier to tap. */
+  #pg-sim .tl-photo-room-dashboard,#pg-sim .tl-clean-room-dashboard{min-height:0!important;height:100%!important;overflow:hidden!important;}
+  #pg-sim .tl-photo-room-scene{padding:4px 6px 2px!important;align-items:center!important;}
+  #pg-sim .tl-photo-room-frame{width:min(100vw,calc((100dvh - 162px) * 1.46))!important;max-height:calc(100dvh - 162px)!important;}
+  #pg-sim .tl-photo-room-img{max-height:calc(100dvh - 162px)!important;width:100%!important;height:auto!important;}
+  #pg-sim .tl-room-hotspot{min-width:44px!important;min-height:44px!important;}
+  #pg-sim .tl-room-hotspot::after{font-size:12px!important;top:-32px!important;padding:6px 10px!important;}
+  #pg-sim .tl-photo-room-status{
+    width:100%!important;
+    max-width:100%!important;
+    gap:6px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    justify-content:flex-start!important;
+    padding:6px 8px calc(7px + var(--tl-safe-bottom))!important;
+    font-size:11px!important;
+    white-space:nowrap!important;
+    scrollbar-width:none!important;
+  }
+  #pg-sim .tl-photo-room-status::-webkit-scrollbar{display:none!important;}
+  #pg-sim .tl-photo-room-status span{flex:0 0 auto!important;}
+
+  /* Dashboard dropdowns become bottom sheets with large tap targets. */
+  #tl-dash-dropdown-v22{
+    position:fixed!important;
+    left:8px!important;
+    right:8px!important;
+    top:auto!important;
+    bottom:calc(8px + var(--tl-safe-bottom))!important;
+    width:auto!important;
+    max-width:none!important;
+    max-height:min(76dvh,620px)!important;
+    border-radius:16px!important;
+    z-index:15000!important;
+    box-shadow:0 -12px 50px rgba(0,0,0,.72),0 0 0 1px rgba(126,249,255,.16)!important;
+  }
+  #tl-dash-dropdown-v22 .tl-dash-dd-head{padding:13px 14px!important;}
+  #tl-dash-dropdown-v22 .tl-dash-dd-title{font-size:14px!important;}
+  #tl-dash-dropdown-v22 .tl-dash-dd-body{padding:10px!important;gap:9px!important;}
+  #tl-dash-dropdown-v22 .tl-dash-dd-row,#tl-dash-dropdown-v22 .tl-dash-vm-card{grid-template-columns:38px minmax(0,1fr)!important;min-height:58px!important;padding:10px!important;border-radius:12px!important;}
+  #tl-dash-dropdown-v22 .tl-dash-dd-icon{width:38px!important;height:38px!important;border-radius:10px!important;}
+  #tl-dash-dropdown-v22 .tl-dash-dd-name{font-size:14px!important;line-height:1.25!important;}
+  #tl-dash-dropdown-v22 .tl-dash-dd-type{font-size:12px!important;line-height:1.35!important;}
+  #tl-dash-dropdown-v22 .tl-dash-dd-state{grid-column:2!important;justify-self:flex-start!important;margin-top:5px!important;}
+  #tl-dash-dropdown-v22 .tl-dash-vm-actions{grid-column:1 / -1!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin-top:7px!important;}
+  #tl-dash-dropdown-v22 .tl-dash-mini-btn{min-height:38px!important;justify-content:center!important;font-size:12px!important;border-radius:10px!important;}
+
+  /* In-game browser becomes a true mobile app-style full-screen panel. */
+  #igb-overlay.open{
+    display:flex!important;
+    align-items:stretch!important;
+    justify-content:stretch!important;
+    padding:0!important;
+    background:#05050e!important;
+    backdrop-filter:none!important;
+  }
+  #igb-window,
+  #igb-window[data-tl-browser-mode="graph"],
+  #igb-window[data-tl-browser-mode="onprem"]{
+    position:fixed!important;
+    inset:0!important;
+    left:0!important;top:0!important;right:0!important;bottom:0!important;
+    transform:none!important;
+    width:100vw!important;
+    height:100dvh!important;
+    max-width:100vw!important;
+    max-height:100dvh!important;
+    border:0!important;
+    border-radius:0!important;
+    box-shadow:none!important;
+  }
+  #igb-chrome{
+    min-height:54px!important;
+    height:auto!important;
+    padding:calc(8px + var(--tl-safe-top)) 10px 8px!important;
+    gap:8px!important;
+    flex-wrap:wrap!important;
+    cursor:default!important;
+  }
+  #igb-chrome .igb-dot{width:14px!important;height:14px!important;}
+  #igb-url-bar{
+    order:20!important;
+    flex:1 0 100%!important;
+    width:100%!important;
+    margin:0!important;
+    padding:8px 10px!important;
+    min-height:34px!important;
+    font-size:12px!important;
+  }
+  #igb-chrome .igb-nav-btn{min-width:34px!important;min-height:34px!important;font-size:18px!important;}
+  #igb-tabbar{
+    flex-wrap:nowrap!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    min-height:48px!important;
+    height:48px!important;
+    padding:0 8px!important;
+    gap:6px!important;
+    align-items:center!important;
+    align-content:center!important;
+    -webkit-overflow-scrolling:touch!important;
+    scrollbar-width:none!important;
+  }
+  #igb-tabbar::-webkit-scrollbar{display:none!important;}
+  #igb-tabbar .igb-tab{
+    flex:0 0 auto!important;
+    min-height:40px!important;
+    min-width:max-content!important;
+    display:inline-flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    gap:7px!important;
+    padding:0 12px!important;
+    font-size:12px!important;
+    border-radius:10px!important;
+    scroll-snap-align:start!important;
+  }
+  #igb-content{height:auto!important;flex:1 1 auto!important;min-height:0!important;overflow:hidden!important;}
+  #igb-content .igb-view{padding:12px!important;overflow-y:auto!important;overflow-x:hidden!important;-webkit-overflow-scrolling:touch!important;}
+  #igb-content .cmd-bar{position:sticky!important;top:0!important;z-index:5!important;background:rgba(10,10,24,.96)!important;padding:8px 0!important;margin-bottom:10px!important;backdrop-filter:blur(10px)!important;}
+  #igb-content .cmd-btn,#igb-content .igb-tbtn,#igb-content .abtn{min-height:40px!important;border-radius:10px!important;padding:8px 11px!important;font-size:12px!important;}
+  #igb-content .res-grid,#igb-content .srv-grid,#igb-content .tl32-grid,#igb-content .tl-op-grid{grid-template-columns:1fr!important;gap:10px!important;}
+  #igb-window .res-card{min-height:86px!important;padding:13px!important;border-radius:12px!important;}
+  #igb-window .res-name{font-size:14px!important;line-height:1.35!important;white-space:normal!important;}
+  #igb-window .res-type{font-size:12px!important;line-height:1.35!important;}
+
+  /* On-prem hardware forms/readouts turn into clear single-column cards. */
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-wrap{gap:12px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-head{padding:12px!important;border-radius:13px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-title{font-size:14px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-sub{font-size:12px!important;line-height:1.5!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-card{padding:12px!important;border-radius:13px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-name,
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-device-name{font-size:14px!important;line-height:1.28!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-desc{font-size:12px!important;min-height:0!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-card-top{align-items:center!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-icon{width:40px!important;height:40px!important;font-size:20px!important;border-radius:11px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-device-main{display:grid!important;grid-template-columns:42px minmax(0,1fr)!important;align-items:start!important;gap:10px!important;padding:12px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-device-actions{grid-column:1 / -1!important;width:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;margin:4px 0 0!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-form{grid-template-columns:1fr!important;gap:10px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-field input,
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-field select,
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-field textarea{min-height:42px!important;font-size:13px!important;border-radius:10px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-field label{font-size:11px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-map{grid-template-columns:1fr!important;gap:9px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-map:before{display:none!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-node{min-height:76px!important;border-radius:12px!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-vlan-grid{grid-template-columns:1fr!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-mini-flow{display:grid!important;grid-template-columns:1fr!important;}
+  #igb-window[data-tl-browser-mode="onprem"] .tl-op-mini-arrow{transform:rotate(90deg);justify-self:center;}
+
+  /* Graph: easier phone-first summaries, with the SVG still scrollable/pannable. */
+  #igb-window[data-tl-browser-mode="graph"] .tl32-graph-head{flex-direction:column!important;padding:12px!important;border-radius:13px!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-graph-title{font-size:14px!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-graph-sub{font-size:12px!important;line-height:1.5!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-pillrow{justify-content:flex-start!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-shell{min-height:420px!important;max-height:none!important;overflow:auto!important;border-radius:13px!important;-webkit-overflow-scrolling:touch!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-svg{min-width:920px!important;width:920px!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-linkrow{grid-template-columns:1fr!important;gap:6px!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-badge{justify-self:start!important;}
+
+  /* VM connect sessions and tutorial/modals use full-screen mobile windows instead of tiny desktop dialogs. */
+  .vmconn-backdrop{padding:0!important;align-items:stretch!important;justify-content:stretch!important;}
+  .vmconn-window{width:100vw!important;height:100dvh!important;max-width:100vw!important;max-height:100dvh!important;border-radius:0!important;border-left:0!important;border-right:0!important;}
+  .vmconn-titlebar{min-height:46px!important;height:auto!important;padding:calc(7px + var(--tl-safe-top)) 9px 7px!important;}
+  .vmconn-desktop{flex-direction:column!important;padding:9px!important;gap:9px!important;}
+  .vmconn-side{width:100%!important;display:grid!important;grid-template-columns:1fr 1fr!important;gap:8px!important;}
+  .vmconn-card{padding:9px!important;}
+  .vmconn-console-wrap{min-height:0!important;flex:1 1 auto!important;}
+  .vmconn-terminal{font-size:12px!important;line-height:1.55!important;}
+  .tl-multi-vm-window,.tl-vm-gui-window,.vm-gui-window{width:100vw!important;height:100dvh!important;max-width:100vw!important;max-height:100dvh!important;left:0!important;top:0!important;border-radius:0!important;}
+}
+
+@media (max-width: 430px){
+  #pg-sim .tl-mode-row .mode-btn,
+  #pg-sim .tl-mode-row.main .mode-btn,
+  #pg-sim .tl-mode-row.sub .mode-btn{min-width:54px!important;padding:0 8px!important;font-size:12px!important;}
+  #pg-sim .tl-mode-row .mode-btn i{font-size:12px!important;}
+  #pg-sim .tl-clean-top-stats > *{font-size:11px!important;min-height:30px!important;padding:5px 8px!important;}
+  #pg-sim .tl-photo-room-frame{width:100vw!important;max-height:calc(100dvh - 176px)!important;}
+  #pg-sim .tl-photo-room-img{max-height:calc(100dvh - 176px)!important;}
+  #igb-window[data-tl-browser-mode="graph"] .tl32-svg{min-width:820px!important;width:820px!important;}
+  .vmconn-side{grid-template-columns:1fr!important;}
+}
+
+@media (orientation: landscape) and (max-height: 520px){
+  #pg-sim .sim-top{grid-template-columns:auto minmax(0,1fr) auto!important;padding-top:5px!important;padding-bottom:5px!important;}
+  #pg-sim .mode-toggle.tl-mode-stack,#pg-sim .tl-clean-top-stats{grid-column:auto!important;width:auto!important;max-width:42vw!important;padding-top:0!important;border-top:0!important;}
+  #pg-sim .tl-clean-top-stats{grid-column:2!important;}
+  #pg-sim .mode-toggle.tl-mode-stack{grid-column:1 / 3!important;order:4!important;max-width:100%!important;}
+  #pg-sim .tl-photo-room-frame{width:min(76vw,calc((100dvh - 88px) * 1.5))!important;max-height:calc(100dvh - 88px)!important;}
+  #pg-sim .tl-photo-room-img{max-height:calc(100dvh - 88px)!important;}
+  #igb-window,#igb-window[data-tl-browser-mode="graph"],#igb-window[data-tl-browser-mode="onprem"]{height:100dvh!important;}
+  #igb-chrome{min-height:42px!important;padding-top:5px!important;padding-bottom:5px!important;}
+  #igb-url-bar{order:0!important;flex:1 1 auto!important;width:auto!important;}
+  #igb-tabbar{height:42px!important;min-height:42px!important;}
+}
+</style>
+<script id="tl-patch34-mobile-friendly-js">
+(function(){
+  if(window.__tlPatch34MobileFriendly)return;window.__tlPatch34MobileFriendly=true;
+  function setMobileClass(){
+    var isMobile=window.matchMedia&&window.matchMedia('(max-width: 820px)').matches;
+    document.documentElement.classList.toggle('tl-mobile',!!isMobile);
+    document.documentElement.classList.toggle('tl-touch',('ontouchstart' in window)||navigator.maxTouchPoints>0);
+  }
+  setMobileClass();
+  window.addEventListener('resize',setMobileClass,{passive:true});
+  window.addEventListener('orientationchange',function(){setTimeout(setMobileClass,150);},{passive:true});
+
+  /* When a desktop-dragged browser is opened on mobile, recenter it so it cannot appear half off-screen. */
+  function mobileResetBrowser(){
+    if(!document.documentElement.classList.contains('tl-mobile'))return;
+    var w=document.getElementById('igb-window');
+    if(!w)return;
+    w.style.left='0px';w.style.top='0px';w.style.transform='none';w.style.position='fixed';
+  }
+  ['openIgb','openNetworkGraphBrowser','openPhotoRoomPanel'].forEach(function(name){
+    var old=window[name];
+    if(typeof old==='function'){
+      window[name]=function(){var r=old.apply(this,arguments);setTimeout(mobileResetBrowser,30);setTimeout(mobileResetBrowser,180);return r;};
+      try{eval(name+'=window[name]');}catch(e){}
+    }
+  });
+  document.addEventListener('click',function(e){
+    if(e.target&&e.target.closest&&e.target.closest('#igb-window,#igb-overlay,.tl-v22-dd-trigger,.tl-v29-op-trigger,#tl-clean-top-stats .money'))setTimeout(mobileResetBrowser,25);
+  },true);
 })();
 </script>
 
