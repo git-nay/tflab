@@ -15370,5 +15370,107 @@ html.tl-homepage-active #pg-land .l-nav{
 })();
 </script>
 
+
+
+<style id="tl-patch53-enter-sandbox-fix-css">
+/* Patch 53: entering Sandbox must not be overridden by the homepage scroll cleanup rules. */
+html.tl-sim-active,
+html.tl-sim-active body{
+  height:100%!important;
+  max-height:100%!important;
+  overflow:hidden!important;
+}
+html.tl-sim-active #pg-land,
+html.tl-sim-active #pg-auth{
+  display:none!important;
+}
+html.tl-sim-active #pg-sim{
+  display:flex!important;
+  flex-direction:column!important;
+  height:100vh!important;
+  min-height:100vh!important;
+  overflow:hidden!important;
+}
+@supports(height:100dvh){
+  html.tl-sim-active #pg-sim{height:100dvh!important;min-height:100dvh!important;}
+}
+</style>
+<script id="tl-patch53-enter-sandbox-fix-js">
+(function(){
+  if(window.__tlPatch53EnterSandboxFix)return;
+  window.__tlPatch53EnterSandboxFix=true;
+
+  function root(){return document.documentElement;}
+  function body(){return document.body;}
+  function loadingActive(){
+    var l=document.getElementById('tl-loading-screen');
+    return !!((l&&l.classList.contains('show'))||window.__tlLoadingActive);
+  }
+  function clearHomeLock(){
+    try{root().classList.remove('tl-homepage-active');}catch(e){}
+    try{if(body())body().classList.remove('tl-homepage-active');}catch(e){}
+    try{root().style.overflowY='';root().style.height='';}catch(e){}
+    try{if(body()){body().style.overflowY='';body().style.height='';}}catch(e){}
+  }
+  function enableSimLock(forceVisible){
+    clearHomeLock();
+    try{root().classList.add('tl-sim-active');}catch(e){}
+    try{if(body())body().classList.add('tl-sim-active');}catch(e){}
+    if(forceVisible&&!loadingActive()){
+      var sim=document.getElementById('pg-sim');
+      var land=document.getElementById('pg-land');
+      var auth=document.getElementById('pg-auth');
+      if(land)land.style.cssText='display:none;';
+      if(auth)auth.style.cssText='display:none;';
+      if(sim)sim.style.cssText='display:flex;flex-direction:column;height:100vh;overflow:hidden;';
+    }
+  }
+  function disableSimLock(){
+    try{root().classList.remove('tl-sim-active');}catch(e){}
+    try{if(body())body().classList.remove('tl-sim-active');}catch(e){}
+  }
+  function scheduleSimFix(){
+    [90,180,420,1100,3020,3180,3600].forEach(function(ms){
+      setTimeout(function(){
+        if(window.__tlLastRequestedPage==='pg-sim')enableSimLock(ms>=3000);
+      },ms);
+    });
+  }
+
+  var oldShowPage=window.showPage;
+  if(typeof oldShowPage==='function'){
+    window.showPage=function(id){
+      window.__tlLastRequestedPage=id;
+      if(id!=='pg-sim')disableSimLock();
+      var ret=oldShowPage.apply(this,arguments);
+      if(id==='pg-sim')scheduleSimFix();
+      return ret;
+    };
+    try{showPage=window.showPage;}catch(e){}
+  }
+
+  var oldLogin=window.loginSuccess;
+  if(typeof oldLogin==='function'&&!oldLogin.__tlPatch53){
+    window.loginSuccess=function(user){
+      window.__tlLastRequestedPage='pg-sim';
+      var ret=oldLogin.apply(this,arguments);
+      scheduleSimFix();
+      return ret;
+    };
+    window.loginSuccess.__tlPatch53=true;
+    try{loginSuccess=window.loginSuccess;}catch(e){}
+  }
+
+  function boot(){
+    var sim=document.getElementById('pg-sim');
+    if(sim&&getComputedStyle(sim).display!=='none'){
+      window.__tlLastRequestedPage='pg-sim';
+      enableSimLock(true);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script>
+
 </body>
 </html>
